@@ -1,0 +1,315 @@
+{
+  "name": "EXPENSE REPORT POLICY",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "28f60e86-5ce2-45ae-811b-f5ef1065cf82",
+              "name": "Employee1",
+              "value": "Asmitha",
+              "type": "string"
+            },
+            {
+              "id": "7f9e1c6f-2cc3-4669-8315-aa5b1a679013",
+              "name": "Category1",
+              "value": "Food",
+              "type": "string"
+            },
+            {
+              "id": "84bf4a0a-ff10-4ba7-ab9a-f2086dbda542",
+              "name": "Amount1",
+              "value": 1500,
+              "type": "number"
+            },
+            {
+              "id": "782d6b71-117f-4c27-9e6c-180c0b06f760",
+              "name": "AllowedLimit1",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "87efa2a4-6c0e-474d-a486-d932277385ca",
+              "name": "Employee2",
+              "value": "Vasantha",
+              "type": "string"
+            },
+            {
+              "id": "d9160def-8b29-4283-bbc2-bef5c24b01b4",
+              "name": "Category2",
+              "value": "Travel",
+              "type": "string"
+            },
+            {
+              "id": "83189f1c-582a-4458-94a5-24785904634a",
+              "name": "Amount2",
+              "value": 4000,
+              "type": "number"
+            },
+            {
+              "id": "2e271fd3-fb9c-447a-bc2e-760096a45281",
+              "name": "AllowedLimit2",
+              "value": "5000",
+              "type": "string"
+            },
+            {
+              "id": "d63e1c5a-720c-443d-bf63-afc6310f000d",
+              "name": "Employee3",
+              "value": "Pavani",
+              "type": "string"
+            },
+            {
+              "id": "0566f10d-07c3-41c2-94fe-0e3dbfaf4a58",
+              "name": "Category3",
+              "value": "Hostel",
+              "type": "string"
+            },
+            {
+              "id": "6b04ccaf-d0b5-4185-8f34-915dd6a14fe1",
+              "name": "Amount3",
+              "value": "5000",
+              "type": "string"
+            },
+            {
+              "id": "d8a528ca-efce-4fa8-9400-33f3beab5efc",
+              "name": "AllowedLimit3",
+              "value": "4000",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ecaf3862-ecba-4684-a3d7-b96e41c042c5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\nreturn [\n  {\n    json: {\n      Employee: data.Employee1,\n      Category: data.Category1,\n      Amount: Number(data.Amount1),\n      AllowedLimit: Number(data.AllowedLimit1)\n    }\n  },\n  {\n    json: {\n      Employee: data.Employee2,\n      Category: data.Category2,\n      Amount: Number(data.Amount2),\n      AllowedLimit: Number(data.AllowedLimit2)\n    }\n  },\n  {\n    json: {\n      Employee: data.Employee3,\n      Category: data.Category3,\n      Amount: Number(data.Amount3),\n      AllowedLimit: Number(data.AllowedLimit3)\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e101031b-b0d4-456d-b02c-2527f40ffc1b",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4c9aec98-5606-42bb-a45a-bcb0e52e40f4",
+              "rightValue": "={{ $json.AllowedLimit }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.Amount }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "f18732f7-0a5b-4e6c-b3fc-0170fbf34944",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "33849111-f977-4bf7-ae87-63c228ef4fdc",
+              "name": "Status",
+              "value": "Non-compliant",
+              "type": "string"
+            },
+            {
+              "id": "69c997f3-4305-453f-87ab-b7b32bfeeb2d",
+              "name": "Reason",
+              "value": "Expense exceeds the allowed limit",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "9c453504-1dbf-4285-824e-d4beff58e934",
+      "name": "compliant"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a5566d5-7578-4c6a-bd72-23ddc58e83e6",
+              "name": "Status",
+              "value": "Need Review",
+              "type": "string"
+            },
+            {
+              "id": "bb02c030-7dd8-41f3-85fc-4606277e62f5",
+              "name": "Reason",
+              "value": "Expense is within the allowed limit",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        896,
+        96
+      ],
+      "id": "49cfb201-f8f2-4aa6-ad9b-35d0b19231ce",
+      "name": "Need Review"
+    },
+    {
+      "parameters": {
+        "sendTo": "aasmithaseva@gmail.com",
+        "subject": "Expense Report Policy Compliance Alert",
+        "message": "=Expense Report Policy Alert\n\nEmployee: {{ $json.Employee }}\nCategory: {{ $json.Category }}\nAmount: ₹{{ $json.Amount }}\nAllowed Limit: ₹{{ $json.AllowedLimit }}\n\nStatus: {{ $json.Status }}\nReason: {{ $json.Reason }}\n\nPlease review this expense before approval.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        96
+      ],
+      "id": "464a017b-fde5-4b81-b9e1-26b485da5fab",
+      "name": "Send a message",
+      "webhookId": "b8ec4375-3c03-4f02-b9bf-c3368310e263",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8N5jLROAYa1KCl8j",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        32
+      ],
+      "id": "8478c0fe-f1fd-4e7b-a2a2-2ce1965ce0d2",
+      "name": "When chat message received",
+      "webhookId": "385d6e00-62c5-4dcf-9c7f-90c305612ecf"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "compliant",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Need Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Need Review": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "5214ef68-bd1d-43bd-8931-4dddc34f6e92",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7a3ca6242880f293198af3dcfc67a05cb5206bff4fed523e6f2c2657af98641c"
+  },
+  "nodeGroups": [],
+  "id": "eDZtGetdwgOfO0BJ",
+  "tags": []
+}
